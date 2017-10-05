@@ -1,6 +1,6 @@
 
 .data
-printNumber:	.asciz "%d\n"
+printNumber:	.asciz "test\n"
 
 .text
 .global main
@@ -12,22 +12,16 @@ main:
 	pushq	$10
 	pushq	$5
 	
-	call	addition
-	
-	movq	$printNumber, %rdi	
-	popq	%rsi # Pop result from stack
-	call	printf
+	call	stackAdd
+	call	stackPrint
 
 	# Subtraction test 10 - 5
 	# Parameters	
 	pushq 	$10
 	pushq	$5
 
-	call 	subtraction
-
-	movq	$printNumber, %rdi	
-	popq	%rsi # Pop result from stack
-	call	printf
+	call 	stackSub
+	call 	stackPrint
 	
 	popq	%rax
 	ret
