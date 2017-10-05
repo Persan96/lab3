@@ -1,6 +1,7 @@
 #-------****
 # Variables
 #-------****
+MKDIR_P = mkdir -p
 CC = gcc
 LD = gcc
 LIB_DIR = lib
@@ -15,7 +16,10 @@ RM = /bin/rm
 #----------------------------------------------------------------------
 # Make directories
 #----------------------------------------------------------------------
-mkdir -p $($(LIB_DIR),$(OBJ_DIR),$(SRC_DIR),$(LEX_DIR))
+-mkdir -p .lib
+-mkdir -p .bin
+-mkdir -p .src
+-mkdir -p .lexyacc-code
 
 #----------------------------------------------------------------------
 # Compile code
@@ -23,7 +27,7 @@ mkdir -p $($(LIB_DIR),$(OBJ_DIR),$(SRC_DIR),$(LEX_DIR))
 bison -y -d src/calc3.y #
 flex src/calc3.l #
 
-all: $(PROG)
+all: directories $(PROG)
 
 $(PROG): $(OBJS)
 	$(LD) $^ -o $(PROG)
