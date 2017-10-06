@@ -76,6 +76,27 @@ main:
 
 	LTTestEnd:
 		
+	# compareLT test 10 > 5
+	# Parameters
+	movabsq	$10, %rax
+	pushq	%rax
+	movabsq	$5, %rax
+	pushq	%rax
+		
+	call 	stackCompGT
+	je	GTTestTrue	
 
+	movq	$printTestFalse, %rdi
+	movq	$1, %rsi
+	call	printf
+	jmp	GTTestEnd
+	
+	GTTestTrue:
+		movq	$printTestTrue, %rdi
+		movq	$1, %rsi
+		call	printf
+
+	GTTestEnd:
+	
 	popq	%rax
 	ret
