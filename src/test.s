@@ -142,7 +142,27 @@ main:
 
 	LETestEnd:
 
+	# compareLT test 10 != 5
+	# Parameters
+	movabsq	$10, %rax
+	pushq	%rax
+	movabsq	$5, %rax
+	pushq	%rax
+		
+	call 	stackCompNE
+	je	NETestTrue	
 
+	movq	$printTestFalse, %rdi
+	movq	$4, %rsi
+	call	printf
+	jmp	NETestEnd
+	
+	NETestTrue:
+		movq	$printTestTrue, %rdi
+		movq	$4, %rsi
+		call	printf
+
+	NETestEnd:
 
 	popq	%rax
 	ret

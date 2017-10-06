@@ -139,8 +139,23 @@ stackCompLE:
 
 .global stackCompNE
 stackCompNE:
+	popq	%rbx # Save callee address
+	popq	%rsi # Param 2
+	popq	%rdi # Param 1
 
-	ret
+	# Used to flag true or false
+	movq	$1, %rax
+	movq	$0, %rdx
+
+	cmpq	%rsi, %rdi 
+	je	compNEExit # Jump if param 1 equal than param 2 
+	
+	movq	$1, %rdx # Param 1 is not equal, return true
+
+	compNEExit:
+		cmpq	%rax, %rdx # "Return value"
+		pushq	%rbx # Push back callee address
+		ret
 
 .global stackCompEQ
 stackCompEQ:
