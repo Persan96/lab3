@@ -1,13 +1,14 @@
 
 .data
-testStr:	.asciz "Test\n"
-newLine:	.asciz "\n"
-tempStr:	.space 64 # Reservera 64 byte
+tempStr:	.space 64 # Reserve 64 byte, should be smaller 
+			  # Max 64 bit signed int is 9,223,372,036,854,775,807. That is 19 characters 
+			  # Min 64 bit signed int is -9,223,372,036,854,775,808. That is 20 characters
+testStr:	.asciz "%d\n"
 
 .text
 .global stackAdd
 stackAdd:
-	popq	%rbx # Callee address
+	popq	%rbx # Save callee address
 	popq	%rsi # Param 2
 	popq	%rdi # Param 1
 
@@ -20,7 +21,7 @@ stackAdd:
 
 .global stackSub
 stackSub:
-	popq	%rbx # Callee address
+	popq	%rbx # Save callee address
 	popq	%rsi # Param 2
 	popq	%rdi # Param 1
 
@@ -33,13 +34,27 @@ stackSub:
 
 .global stackMul
 stackMul:
+	popq	%rbx # Save callee address	
+	popq	%rax # Param 2
+	popq	%rdi # Param 1
+	
+	imulq	%rdi
 
+	pushq 	%rax # Push result
+	pushq	%rbx # Push back callee address
 	ret
-
 
 .global stackDiv
 stackDiv:
-
+	popq	%rbx # Save callee address
+	popq	%rdi # Divisor | Nämnare
+	popq	%rax # Divident | Täljare
+	movq	$0, %rdx # idivq uses both %rdx(high) and %rax(low) as divident
+		
+	idivq 	%rdi
+	
+	pushq	%rax # Push result
+	pushq	%rbx # Push back callee address
 	ret
 
 .global stackCompLT
@@ -157,18 +172,15 @@ stackPrint:
 		cmpq	$0, %r11
 		jg	addToStr
 	
+	# Add new line
+	movb	$'\n', (%r10)
+	incq	%r8
+	
 	# Print result
 	movq	$1, %rax # Syscall for write
 	movq	$1, %rdi # Write to stdout
 	movq	$tempStr, %rsi # String to use
 	movq	%r8, %rdx # How many characters
-	syscall
-	
-	# Print new line
-	movq	$1, %rax # Syscall for write
-	movq	$1, %rdi # Write to stdout
-	movq	$newLine, %rsi # String to use
-	movq	$1, %rdx # How many characters
 	syscall
 	
 	# Restore registers

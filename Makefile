@@ -13,6 +13,8 @@ SRCS = $(wildcard $(SRC_DIR)/*.c,$(LEX_DIR)/*.c)
 OBJS = $($(patsubst $(SRC_DIR)/y.tab.c,$(OBJ_DIR)/y.tab.o,$(SRCS))$(patsubst $(SRC_DIR)/lex.yy.c,$(SRC_DIR)/lex.yy.o,$(SRCS))
 PROG = ($calc3a.exe,$calc3b.exe,$calc3g.exe,$calc3i.exe)
 RM = /bin/rm
+BISON := $(shell command -v bison 2>/dev/null)
+FLEX := $(shell command -v flex 2>/dev/null)
 #----------------------------------------------------------------------
 # Compile code
 #----------------------------------------------------------------------
@@ -39,6 +41,10 @@ install:
 	mkdir -p .bin
 	mkdir -p .src
 	mkdir -p .lexyacc-code
-	if [ bison -V > /dev/null 2>&1 ]; then
-		echo"Bison not installed"
-	fi
+	
+	ifndef BISON
+		$(error "Install bison and flex before use")
+	endif
+	ifndef FLEX
+		$(error "Install bison and flex before use")
+	endif
