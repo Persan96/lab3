@@ -97,6 +97,28 @@ main:
 		call	printf
 
 	GTTestEnd:
+
+	# compareLT test 10 >= 5
+	# Parameters
+	movabsq	$10, %rax
+	pushq	%rax
+	movabsq	$5, %rax
+	pushq	%rax
+		
+	call 	stackCompGE
+	je	GETestTrue	
+
+	movq	$printTestFalse, %rdi
+	movq	$2, %rsi
+	call	printf
+	jmp	GETestEnd
 	
+	GETestTrue:
+		movq	$printTestTrue, %rdi
+		movq	$2, %rsi
+		call	printf
+
+	GETestEnd:
+
 	popq	%rax
 	ret
