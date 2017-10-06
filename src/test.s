@@ -120,5 +120,29 @@ main:
 
 	GETestEnd:
 
+	# compareLT test 10 <= 5
+	# Parameters
+	movabsq	$10, %rax
+	pushq	%rax
+	movabsq	$5, %rax
+	pushq	%rax
+		
+	call 	stackCompLE
+	je	LETestTrue	
+
+	movq	$printTestFalse, %rdi
+	movq	$3, %rsi
+	call	printf
+	jmp	LETestEnd
+	
+	LETestTrue:
+		movq	$printTestTrue, %rdi
+		movq	$3, %rsi
+		call	printf
+
+	LETestEnd:
+
+
+
 	popq	%rax
 	ret

@@ -96,7 +96,6 @@ stackCompGT:
 		cmpq	%rax, %rdx # "Return value"
 		pushq	%rbx # Push back callee address
 		ret
-	ret
 
 .global stackCompGE
 stackCompGE:
@@ -117,13 +116,26 @@ stackCompGE:
 		cmpq	%rax, %rdx # "Return value"
 		pushq	%rbx # Push back callee address
 		ret
-	ret
-	ret
 
 .global stackCompLE
 stackCompLE:
+	popq	%rbx # Save callee address
+	popq	%rsi # Param 2
+	popq	%rdi # Param 1
 
-	ret
+	# Used to flag true or false
+	movq	$1, %rax
+	movq	$0, %rdx
+
+	cmpq	%rsi, %rdi 
+	jg	compLEExit # Jump if param 1 is greater than param 2 
+	
+	movq	$1, %rdx # Param 1 is less or equal, return true
+
+	compLEExit:
+		cmpq	%rax, %rdx # "Return value"
+		pushq	%rbx # Push back callee address
+		ret
 
 .global stackCompNE
 stackCompNE:
