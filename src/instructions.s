@@ -148,9 +148,9 @@ stackCompNE:
 	movq	$0, %rdx
 
 	cmpq	%rsi, %rdi 
-	je	compNEExit # Jump if param 1 equal than param 2 
+	je	compNEExit # Jump if param 1 is equal param 2 
 	
-	movq	$1, %rdx # Param 1 is not equal, return true
+	movq	$1, %rdx # Param 1 is not equal to param 2, return true
 
 	compNEExit:
 		cmpq	%rax, %rdx # "Return value"
@@ -159,8 +159,23 @@ stackCompNE:
 
 .global stackCompEQ
 stackCompEQ:
+	popq	%rbx # Save callee address
+	popq	%rsi # Param 2
+	popq	%rdi # Param 1
 
-	ret
+	# Used to flag true or false
+	movq	$1, %rax
+	movq	$0, %rdx
+
+	cmpq	%rsi, %rdi 
+	jne	compEQExit # Jump if param 1 is not equal param 2 
+	
+	movq	$1, %rdx # Param 1 is equal to param 2, return true
+
+	compEQExit:
+		cmpq	%rax, %rdx # "Return value"
+		pushq	%rbx # Push back callee address
+		ret
 
 .global stackGCD
 stackGCD:
