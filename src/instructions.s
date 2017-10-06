@@ -38,7 +38,7 @@ stackMul:
 	popq	%rax # Param 2
 	popq	%rdi # Param 1
 	
-	imulq	%rdi
+	imulq	%rdi # %rdi * %rax, result saved in %rax
 
 	pushq 	%rax # Push result
 	pushq	%rbx # Push back callee address
@@ -51,7 +51,7 @@ stackDiv:
 	popq	%rax # Divident | Täljare
 	movq	$0, %rdx # idivq uses both %rdx(high) and %rax(low) as divident
 		
-	idivq 	%rdi
+	idivq 	%rdi # %rax / %rdi, result saved in %rax
 	
 	pushq	%rax # Push result
 	pushq	%rbx # Push back callee address
@@ -59,8 +59,23 @@ stackDiv:
 
 .global stackCompLT
 stackCompLT:
+	popq	%rbx # Save callee address
+	popq	%rsi # Param 2
+	popq	%rdi # Param 1
 
-	ret
+	# Used to flag true or false
+	movq	$1, %rax
+	movq	$0, %rdx
+
+	cmpq	%rsi, %rdi 
+	jge	compLTExit # Jump if param 1 is bigger or equal to param 2 
+	
+	movq	$1, %rdx # Param 1 is smaller, return false
+
+	compLTExit:
+		cmpq	%rax, %rdx # "Return value"
+		pushq	%rbx # Push back callee address
+		ret
 
 .global stackCompGT
 stackCompGT:
