@@ -177,6 +177,11 @@ stackCompEQ:
 		pushq	%rbx # Push back callee address
 		ret
 
+.global stackNeg
+stackNeg:
+
+	ret
+
 .global stackGCD
 stackGCD:
 

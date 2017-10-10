@@ -10,17 +10,18 @@ int ex(nodeType *p) {
     if (!p) return 0;
     switch(p->type) {
     case typeCon:       
-        printf("\tpush\t%d\n", p->con.value); 
+        printf("\tmovabsq\t$%d, \%rax\n", p->con.value);
+	printf("\tpushq\t\%rax\n"); 
         break;
     case typeId:        
-        printf("\tpush\t%c\n", p->id.i + 'a'); 
+        printf("\tpushq\t%c\n", p->id.i + 'a'); 
         break;
     case typeOpr:
         switch(p->opr.oper) {
         case WHILE:
             printf("L%03d:\n", lbl1 = lbl++);
             ex(p->opr.op[0]);
-            printf("\tjz\tL%03d\n", lbl2 = lbl++);
+            printf("\tje\tL%03d\n", lbl2 = lbl++);
             ex(p->opr.op[1]);
             printf("\tjmp\tL%03d\n", lbl1);
             printf("L%03d:\n", lbl2);
@@ -29,7 +30,7 @@ int ex(nodeType *p) {
             ex(p->opr.op[0]);
             if (p->opr.nops > 2) {
                 /* if else */
-                printf("\tjz\tL%03d\n", lbl1 = lbl++);
+                printf("\tje\tL%03d\n", lbl1 = lbl++);
                 ex(p->opr.op[1]);
                 printf("\tjmp\tL%03d\n", lbl2 = lbl++);
                 printf("L%03d:\n", lbl1);
@@ -37,46 +38,46 @@ int ex(nodeType *p) {
                 printf("L%03d:\n", lbl2);
             } else {
                 /* if */
-                printf("\tjz\tL%03d\n", lbl1 = lbl++);
+                printf("\tje\tL%03d\n", lbl1 = lbl++);
                 ex(p->opr.op[1]);
                 printf("L%03d:\n", lbl1);
             }
             break;
         case PRINT:     
             ex(p->opr.op[0]);
-            printf("\tprint\n");
+            printf("\tcall\tstackPrint\n");
             break;
         case '=':       
             ex(p->opr.op[1]);
-            printf("\tpop\t%c\n", p->opr.op[0]->id.i + 'a');
+            printf("\tpopq\t%c\n", p->opr.op[0]->id.i + 'a');
             break;
         case UMINUS:    
             ex(p->opr.op[0]);
-            printf("\tneg\n");
+            printf("\tcall\tstackNeg\n");
             break;
 	case FACT:
   	    ex(p->opr.op[0]);
-	    printf("\tfact\n");
+	    printf("\tcall\tstackFact\n");
 	    break;
 	case LNTWO:
 	    ex(p->opr.op[0]);
-	    printf("\lntwo\n");
+	    printf("\lcall\tstackLntwo\n");
 	    break;
         default:
             ex(p->opr.op[0]);
             ex(p->opr.op[1]);
             switch(p->opr.oper) {
-	    case GCD:   printf("\tgcd\n"); break;
-            case '+':   printf("\tadd\n"); break;
-            case '-':   printf("\tsub\n"); break; 
-            case '*':   printf("\tmul\n"); break;
-            case '/':   printf("\tdiv\n"); break;
-            case '<':   printf("\tcompLT\n"); break;
-            case '>':   printf("\tcompGT\n"); break;
-            case GE:    printf("\tcompGE\n"); break;
-            case LE:    printf("\tcompLE\n"); break;
-            case NE:    printf("\tcompNE\n"); break;
-            case EQ:    printf("\tcompEQ\n"); break;
+	    case GCD:   printf("\tcall\tstackGCD\n"); break;
+            case '+':   printf("\tcall\tstackAdd\n"); break;
+            case '-':   printf("\tcall\tstackSub\n"); break; 
+            case '*':   printf("\tcall\tstackMul\n"); break;
+            case '/':   printf("\tcall\tstackDiv\n"); break;
+            case '<':   printf("\tcall\tstackCompLT\n"); break;
+            case '>':   printf("\tcall\tstackCompGT\n"); break;
+            case GE:    printf("\tcall\tstackCompGE\n"); break;
+            case LE:    printf("\tcall\tstackCompLE\n"); break;
+            case NE:    printf("\tcall\tstackCompNE\n"); break;
+            case EQ:    printf("\tcall\tstackCompEQ\n"); break;
             }
         }
     }

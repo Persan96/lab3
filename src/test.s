@@ -186,5 +186,12 @@ main:
 
 	EQTestEnd:
 
+	movabsq	$10, %rax
+	pushq	%rax
+	popq	a
+
+	pushq	a
+	call	stackPrint
+
 	popq	%rax
 	ret
