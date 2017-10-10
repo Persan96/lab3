@@ -1,0 +1,15 @@
+a=732;
+b=2684;
+while(a != b) {
+  print 1;
+  if(a > b) {
+    print 2;
+    a=a-b;
+  } else {
+    print 3;
+    b=b-a;
+  }
+}
+
+print a;
+print b;
