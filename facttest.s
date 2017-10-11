@@ -30,7 +30,7 @@
 .global main
 main:
 	pushq	$0
-	movabsq	$10, %rax
+	movabsq	$2, %rax
 	pushq	%rax
 	call	stackFact
 	call	stackPrint

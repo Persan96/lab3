@@ -178,7 +178,13 @@ stackCompEQ:
 
 .global stackNeg
 stackNeg:
+	popq 	%rbx # Save callee address
+	popq 	%rdi # Param 1
 
+	negq	%rdi # Switch sign
+
+	pushq	%rdi # Push back result
+	pushq	%rbx # Push back callee address
 	ret
 
 .global stackGCD
@@ -188,35 +194,36 @@ stackGCD:
 
 .global stackFact
 stackFact:
-	popq %rbx # Save callee address
-	popq %rdi # Param 1
-	cmpq $0, %rdi # check if input is less than 0
-	jl compLess
+	popq 	%rbx # Save callee address
+	popq 	%rdi # Param 1
 
-	cmpq $1, %rdi # check if input is zero or one
-	jle comZerOrOne
+	cmpq 	$0, %rdi # check if input is less than 0
+	jle 	compLess
+
+	cmpq 	$1, %rdi # check if input is zero or one
+	jle 	comZerOrOne
 
 	pushq %rdi # If input is not zero or one push value to collect later
 	decq	%rdi # prepare param
 	pushq %rdi # push param
-	call stackFact # call itself
-	popq %rdi # pop result
-	popq %rax # collect what was sent in before
+	call 	stackFact # call itself
+	popq 	%rdi # pop result
+	popq 	%rax # collect what was sent in before
 	imulq %rdi # multiply values
-	movq %rdx, %rax # move result to %rax
-	jmp factExit # jump to exit
+	movq 	%rdx, %rax # move result to %rax
+	jmp 	factExit # jump to exit
 
 	comZerOrOne:
-		movq $1, %rax # move 1 to %rax
-		jmp factExit
+		movq	$1, %rax # move 1 to %rax
+		jmp 	factExit
 
 	compLess:
-		movq $0, %rax # move 0 to %rax
+		movq 	$0, %rax # move 0 to %rax
 
 	factExit:
-	pushq %rax # push result to stack
-	pushq %rbx # push callee address to stack
-	ret
+		pushq %rax # push result to stack
+		pushq %rbx # push callee address to stack
+		ret
 
 .global stackLntwo
 stackLntwo:

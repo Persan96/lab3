@@ -30,36 +30,31 @@
 .global main
 main:
 	pushq	$0
-	movabsq	$732, %rax
+	movabsq	$-1156841474, %rax
 	pushq	%rax
 	popq	a
 	movabsq	$2684, %rax
 	pushq	%rax
 	popq	b
+	pushq	a
+	call	stackPrint
+	pushq	b
+	call	stackPrint
 L000:
 	pushq	a
 	pushq	b
 	call	stackCompNE
 	jne	L001
-	movabsq	$1, %rax
-	pushq	%rax
-	call	stackPrint
 	pushq	a
 	pushq	b
 	call	stackCompGT
 	jne	L002
-	movabsq	$2, %rax
-	pushq	%rax
-	call	stackPrint
 	pushq	a
 	pushq	b
 	call	stackSub
 	popq	a
 	jmp	L003
 L002:
-	movabsq	$3, %rax
-	pushq	%rax
-	call	stackPrint
 	pushq	b
 	pushq	a
 	call	stackSub

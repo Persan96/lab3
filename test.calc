@@ -1,12 +1,13 @@
-a=732;
+a=4223372036854775806;
 b=2684;
+
+print a;
+print b;
+
 while(a != b) {
-  print 1;
   if(a > b) {
-    print 2;
     a=a-b;
   } else {
-    print 3;
     b=b-a;
   }
 }

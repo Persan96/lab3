@@ -11,7 +11,7 @@ int ex(nodeType *p) {
     switch(p->type) {
     case typeCon:
         printf("\tmovabsq\t$%d, \%rax\n", p->con.value);
-	printf("\tpushq\t\%rax\n");
+	      printf("\tpushq\t\%rax\n");
         break;
     case typeId:
         printf("\tpushq\t%c\n", p->id.i + 'a');

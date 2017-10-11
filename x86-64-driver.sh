@@ -39,7 +39,7 @@ fi
 # Get file name without the ending
 FILE_NAME=${1%%${FILE_ENDING}}
 # Print begining part into the assembly file
-echo -e  ${ASSEMBLY_START} > ${FILE_NAME}.s
+echo -e ${ASSEMBLY_START} > ${FILE_NAME}.s
 # Compile into assembly and append it into the assembly file
 cat $1 | ./${BIN_FOLDER}/${COMPILER} >> ${FILE_NAME}.s
 # Append end part into the assembly file
