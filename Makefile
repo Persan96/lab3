@@ -10,41 +10,29 @@ SRC_DIR = src
 LEX_DIR = lexyacc-code
 FLAGS = -I$(LIB_DIR)
 SRCS = $(wildcard $(SRC_DIR)/*.c,$(LEX_DIR)/*.c)
-OBJS = $($(patsubst $(SRC_DIR)/y.tab.c,$(OBJ_DIR)/y.tab.o,$(SRCS))$(patsubst $(SRC_DIR)/lex.yy.c,$(SRC_DIR)/lex.yy.o,$(SRCS))
-PROG = ($calc3a.exe,$calc3b.exe,$calc3g.exe,$calc3i.exe)
+OBJS = $($(patsubst $(SRC_DIR)/y.tab.c,$(OBJ_DIR)/y.tab.o,$(SRCS))$(patsubst $(SRC_DIR)/lex.yy.c,$(SRC_DIR)/lex.yy.o,$(SRCS)))
+COMP = calc3i.exe
 RM = /bin/rm
-BISON := $(shell command -v bison 2>/dev/null)
-FLEX := $(shell command -v flex 2>/dev/null)
 #----------------------------------------------------------------------
 # Compile code
 #----------------------------------------------------------------------
-all: install bisonflex $(PROG)
+all: install bisonflex
 
-$(PROG): $(OBJS)
-	$(LD) $^ -o $(PROG)
+bisonflex:
+	cd $(LEX_DIR)
+	bison -y -d calc3.y
+	flex calc3.l
+	cd ..
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(FLAGS) -c $< -o $@ #ERROR HÄR
-
-bisonflex: 
-	bison -y -d lexyacc-code/calc3.y #
-	flex lexyacc-code/calc3.l #
+install:
+		cd $(LEX_DIR)
+		gcc -c y.tab.c lex.yy.c
+		gcc y.tab.o lex.yy.o calc3i.c -o calc3i.exe
+		cd ..
+		mkdir -p lib
+		mkdir -p bin
+		mkdir -p src
+		mkdir -p lexyacc-code
 
 clean:
 	$(RM) $(PROG) $(OBJS)
-
-#----------------------------------------------------------------------
-# Make directories
-#----------------------------------------------------------------------
-install:
-	mkdir -p .lib
-	mkdir -p .bin
-	mkdir -p .src
-	mkdir -p .lexyacc-code
-	
-	ifndef BISON
-		$(error "Install bison and flex before use")
-	endif
-	ifndef FLEX
-		$(error "Install bison and flex before use")
-	endif
