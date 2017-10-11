@@ -18,21 +18,17 @@ RM = /bin/rm
 #----------------------------------------------------------------------
 all: install bisonflex
 
+# Enter library for lexyacc-code
 bisonflex:
-	cd $(LEX_DIR)
-	bison -y -d calc3.y
-	flex calc3.l
-	cd ..
+	cd $(LEX_DIR); \
+	bison -y -d calc3.y; \
+	flex calc3.l;
 
+# Enter library for lexyacc-code
 install:
-		cd $(LEX_DIR)
-		gcc -c y.tab.c lex.yy.c
-		gcc y.tab.o lex.yy.o calc3i.c -o calc3i.exe
-		cd ..
-		mkdir -p lib
-		mkdir -p bin
-		mkdir -p src
-		mkdir -p lexyacc-code
+		cd $(LEX_DIR); \
+		gcc -c y.tab.c lex.yy.c; \
+		gcc y.tab.o lex.yy.o calc3i.c -o ../bin/calc3i.exe; 
 
 clean:
 	$(RM) $(PROG) $(OBJS)
