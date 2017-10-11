@@ -7,13 +7,13 @@ void yyerror(char *);
 
 %%
 
-[a-z]       { 
+[a-z]       {
                 yylval.sIndex = *yytext - 'a';
                 return VARIABLE;
             }
 
 [0-9]+      {
-                yylval.iValue = atoi(yytext);
+                yylval.iValue = atoll(yytext);
                 return INTEGER;
             }
 

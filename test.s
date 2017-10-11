@@ -30,10 +30,10 @@
 .global main
 main:
 	pushq	$0
-	movabsq	$-1156841474, %rax
+	movabsq	$9223372036854775806, %rax
 	pushq	%rax
 	popq	a
-	movabsq	$2684, %rax
+	movabsq	$2684268426842684268, %rax
 	pushq	%rax
 	popq	b
 	pushq	a

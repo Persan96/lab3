@@ -86,7 +86,7 @@ union YYSTYPE
 {
 #line 19 "calc3.y" /* yacc.c:1909  */
 
-    int iValue;                 /* integer value */
+    long long iValue;                 /* integer value */
     char sIndex;                /* symbol table index */
     nodeType *nPtr;             /* node pointer */
 
