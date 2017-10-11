@@ -777,7 +777,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 10 "calc3.l"
-{ 
+{
                 yylval.sIndex = *yytext - 'a';
                 return VARIABLE;
             }
@@ -786,7 +786,7 @@ case 2:
 YY_RULE_SETUP
 #line 15 "calc3.l"
 {
-                yylval.iValue = atoi(yytext);
+                yylval.iValue = atoll(yytext);
                 return INTEGER;
             }
 	YY_BREAK

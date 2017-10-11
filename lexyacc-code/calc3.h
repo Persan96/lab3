@@ -1,10 +1,9 @@
-#include<stdint.h>
 
 typedef enum { typeCon, typeId, typeOpr } nodeEnum;
 
 /* constants */
 typedef struct {
-    int64_t value;                  /* value of constant */
+    long long value;                  /* value of constant */
 } conNodeType;
 
 /* identifiers */
