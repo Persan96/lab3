@@ -188,7 +188,34 @@ stackGCD:
 
 .global stackFact
 stackFact:
+	popq %rbx # Save callee address
+	popq %rdi # Param 1
+	compq $0, %rdi # check if input is less than 0
+	jl compLess
 
+	compq $1, %rdi # check if input is zero or one
+	jle comZerOrOne
+
+	pushq %rdi # If input is not zero or one push value to collect later
+	decq	%rdi # prepare param
+	pushq %rdi # push param
+	call stackFact # call itself
+	popq %rdi # pop result
+	poqq %rax # collect what was sent in before
+	imulq %rdi # multiply values
+	movq %rdx, %rax # move result to %rax
+	jmp factExit # jump to exit
+
+	comZerOrOne:
+		movq $1, %rax # move 1 to %rax
+		jmp factExit
+
+	compLess:
+		movq $0, %rax # move 0 to %rax
+
+	factExit:
+	pushq %rax # push result to stack
+	pushq %rbx # push callee address to stack
 	ret
 
 .global stackLntwo
