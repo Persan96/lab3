@@ -189,7 +189,7 @@ stackNeg:
 
 .global stackGCD
 stackGCD:
-
+	
 	ret
 
 .global stackFact

@@ -7,7 +7,7 @@
 USAGE="Usage: $0 fileName.calc"
 FILE_ENDING=".calc"
 FILE_NAME=""
-BIN_FOLDER="lexyacc-code" # TODO: CHANGE INTO REAL BIN FOLDER WHEN EXES ARE THERE
+BIN_FOLDER="bin"
 LIB_FOLDER="lib"
 COMPILER="calc3i.exe"
 
@@ -44,5 +44,5 @@ echo -e ${ASSEMBLY_START} > ${FILE_NAME}.s
 cat $1 | ./${BIN_FOLDER}/${COMPILER} >> ${FILE_NAME}.s
 # Append end part into the assembly file
 echo -e ${ASSEMBLY_END} >> ${FILE_NAME}.s
-
-gcc ${FILE_NAME}.s ${LIB_FOLDER}/instructions.s -o ${FILE_NAME} # TODO: Divide into compile and link
+# Compile with instructions
+gcc ${FILE_NAME}.s ${LIB_FOLDER}/instructions.o -o ${FILE_NAME}
