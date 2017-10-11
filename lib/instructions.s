@@ -203,14 +203,16 @@ stackFact:
 	cmpq 	$1, %rdi # check if input is zero or one
 	jle 	comZerOrOne
 
+	pushq	%rbx # Push callee address
 	pushq %rdi # If input is not zero or one push value to collect later
 	decq	%rdi # prepare param
 	pushq %rdi # push param
 	call 	stackFact # call itself
 	popq 	%rdi # pop result
 	popq 	%rax # collect what was sent in before
-	imulq %rdi # multiply values
-	movq 	%rdx, %rax # move result to %rax
+	popq	%rbx # Pop Callee addres
+
+	imulq %rdi # multiply values and result goes into rax
 	jmp 	factExit # jump to exit
 
 	comZerOrOne:
