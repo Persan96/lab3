@@ -1,4 +1,4 @@
-#include<stint.h>
+#include<stdint.h>
 
 typedef enum { typeCon, typeId, typeOpr } nodeEnum;
 

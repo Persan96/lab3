@@ -190,10 +190,10 @@ stackGCD:
 stackFact:
 	popq %rbx # Save callee address
 	popq %rdi # Param 1
-	compq $0, %rdi # check if input is less than 0
+	cmpq $0, %rdi # check if input is less than 0
 	jl compLess
 
-	compq $1, %rdi # check if input is zero or one
+	cmpq $1, %rdi # check if input is zero or one
 	jle comZerOrOne
 
 	pushq %rdi # If input is not zero or one push value to collect later
@@ -201,7 +201,7 @@ stackFact:
 	pushq %rdi # push param
 	call stackFact # call itself
 	popq %rdi # pop result
-	poqq %rax # collect what was sent in before
+	popq %rax # collect what was sent in before
 	imulq %rdi # multiply values
 	movq %rdx, %rax # move result to %rax
 	jmp factExit # jump to exit
