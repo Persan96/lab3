@@ -16,6 +16,7 @@ all: compiler library
 
 # Fix compiler
 compiler: bisonflex
+		mkdir -p $(BIN_DIR)
 		cd $(LEX_DIR); \
 		gcc -c y.tab.c lex.yy.c; \
 		gcc y.tab.o lex.yy.o calc3i.c -o ../$(BIN_DIR)/$(COMP);
@@ -28,7 +29,7 @@ bisonflex:
 
 # Fix library
 library:
-		mkdir -p $(LIB_DIR); \
+		mkdir -p $(LIB_DIR)
 		cd $(SRC_DIR); \
 		$(CC) -c instructions.s -o ../$(LIB_DIR)/instructions.o;
 
