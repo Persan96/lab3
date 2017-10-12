@@ -229,7 +229,14 @@ stackFact:
 
 .global stackLntwo
 stackLntwo:
+	popq	%rbx # Callee address
+	popq	%rsi # Param	
+	
+	xorq	%rax, %rax # Set rax to 0
+	bsrq	%rsi, %rax # Get the biggest set bit
 
+	pushq	%rax # Push back result
+	pushq 	%rbx # Push back callee address
 	ret
 
 .global stackPrint
