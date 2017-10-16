@@ -187,8 +187,26 @@ stackNeg:
 
 .global stackGCD
 stackGCD:
+	popq	%rbx # Save callee address
+	popq 	%rsi # Param 2
+	popq	%rdi # Param 1
 
-	ret
+	gcdLoop:
+		cmpq	%rsi, %rdi
+		je	gcdExit
+		jl	gcdLoopLess # Jump if param 1 is less than
+
+		subq	%rsi, %rdi # param 1 = param 1 - param 2
+
+		gcdLoopLess:
+			subq	%rdi, %rsi # param 2 = param 2 - param 1
+
+	jmp	gcdLoop
+
+	gcdExit:
+		pushq	%rdi # Push back result
+		pushq	%rbx # Push back callee address
+		ret
 
 .global stackFact
 stackFact:
@@ -227,7 +245,14 @@ stackFact:
 
 .global stackLntwo
 stackLntwo:
+	popq	%rbx # Callee address
+	popq	%rsi # Param
 
+	xorq	%rax, %rax # Set rax to 0
+	bsrq	%rsi, %rax # Get the biggest set bit
+
+	pushq	%rax # Push back result
+	pushq 	%rbx # Push back callee address
 	ret
 
 .global stackPrint
