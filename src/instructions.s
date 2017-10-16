@@ -1,8 +1,6 @@
 
 .data
-tempStr:	.space 64 # Reserve 64 byte, should be smaller
-			  # Max 64 bit signed int is 9,223,372,036,854,775,807. That is 19 characters
-			  # Min 64 bit signed int is -9,223,372,036,854,775,808. That is 20 characters
+tempStr:	.space 21 # Reserve 21 byte
 
 .text
 .global stackAdd
@@ -189,7 +187,7 @@ stackNeg:
 
 .global stackGCD
 stackGCD:
-	
+
 	ret
 
 .global stackFact
